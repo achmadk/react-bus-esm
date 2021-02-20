@@ -1,20 +1,27 @@
-import React, { FC, ReactNode, createContext, useContext, useEffect, useState } from 'react'
-import mitt, { Emitter, EventHandlerMap, WildcardHandler } from 'mitt'
+import React, {
+  FC,
+  ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+} from 'react';
+import mitt, { Emitter, EventHandlerMap, WildcardHandler } from 'mitt';
 
-export { EventHandlerMap, Emitter } from 'mitt'
+export { EventHandlerMap, Emitter } from 'mitt';
 
-export const BusContext = createContext<Emitter | null>(null)
+export const BusContext = createContext<Emitter | null>(null);
 
-const { Provider: BusContextProvider } = BusContext
+const { Provider: BusContextProvider } = BusContext;
 
 /**
  * Return the event emitter.
  *
  * @export
- * @return {*} 
+ * @return {*}
  */
 export function useBus(): Emitter {
-  return useContext(BusContext) as Emitter
+  return useContext(BusContext) as Emitter;
 }
 
 /**
@@ -25,19 +32,19 @@ export function useBus(): Emitter {
  * @param {WildcardHandler} fn
  */
 export function useListener(name: string, fn: WildcardHandler) {
-  const bus = useBus()
-  const castedName = name as '*'
+  const bus = useBus();
+  const castedName = name as '*';
   useEffect(() => {
-    bus.on(castedName, fn)
+    bus.on(castedName, fn);
     return () => {
-      bus.off(castedName, fn)
-    }
-  }, [bus, castedName, fn])
+      bus.off(castedName, fn);
+    };
+  }, [bus, castedName, fn]);
 }
 
 export interface ProviderProps {
-  children?: ReactNode
-  mittOptions?: EventHandlerMap
+  children?: ReactNode;
+  mittOptions?: EventHandlerMap;
 }
 
 /**
@@ -45,9 +52,9 @@ export interface ProviderProps {
  *
  * @export
  * @param {ProviderProps} { children, mittOptions }
- * @return {*} 
+ * @return {*}
  */
 export const Provider: FC<ProviderProps> = ({ children, mittOptions }) => {
-  const [bus] = useState(() => mitt(mittOptions))
-  return <BusContextProvider value={bus}>{children}</BusContextProvider>
-}
+  const [bus] = useState(() => mitt(mittOptions));
+  return <BusContextProvider value={bus}>{children}</BusContextProvider>;
+};
