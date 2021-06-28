@@ -1,8 +1,10 @@
 import 'react-app-polyfill/ie11';
+import 'react-app-polyfill/ie9';
+import 'react-app-polyfill/stable';
+
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Emitter } from 'mitt'
-import { Provider, useBus, BusContext, EventHandlerMap } from '../.';
+import { Provider, useBus, BusContext, EventHandlerMap, Emitter } from '../.';
 
 const options: EventHandlerMap = new Map()
 options.set('test', [
@@ -34,7 +36,7 @@ class ClassComponent extends React.PureComponent<{}, ClassComponentState> {
   }
 
   componentDidMount() {
-    this.context.on<string>('test', (payload) => {
+    this.context.on('test', (payload) => {
       this.setState(({ testPayloads }) => ({
         testPayloads: [
           ...testPayloads,
